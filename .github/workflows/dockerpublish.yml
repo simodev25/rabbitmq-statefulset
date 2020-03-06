@@ -1,0 +1,20 @@
+name: Build and Publish Docker
+on: 
+    # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  push:
+    branches:
+      - master
+  # Also trigger on page_build, as well as release created events
+    
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    steps:
+    - uses: actions/checkout@master    
+    - name: Publish rabbitmq-statefulset Scripte
+      uses: elgohr/Publish-Docker-Github-Action@2.12
+      with:
+        name: simo25docker/rabbitmq-statefulset
+        username: ${{ secrets.LOGIN_DOCKER }}
+        password: ${{ secrets.PASSWORD_DOCKER }}
