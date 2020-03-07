@@ -36,11 +36,13 @@ join_cluster () {
 create_vhost() {
     rabbitmq-server -detached
     until rabbitmqctl node_health_check; do echo "Waiting to start..." && sleep 1; done;
-
+    rabbitmqctl delete_user guest
     USER_EXISTS=`rabbitmqctl list_users | { grep $RABBITMQ_USERNAME || true; }`
-
+   
     # create user only if it doesn't exist
     if [ -z "$USER_EXISTS" ]; then
+        rabbitmqctl add_user simo ${RABBITMQ_ADMIN_PASSWORD}
+        rabbitmqctl set_user_tags simo administrator
         rabbitmqctl add_user $RABBITMQ_USERNAME $RABBITMQ_PASSWORD
         rabbitmqctl add_vhost $RABBITMQ_VHOST
         rabbitmqctl set_permissions -p $RABBITMQ_VHOST $RABBITMQ_USERNAME ".*" ".*" ".*"
