@@ -3,6 +3,7 @@ FROM rabbitmq:3.6.12
 #RUN rabbitmq-plugins enable --offline rabbitmq_management
 
 ENV RABBITMQ_ERLANG_COOKIE changeThis
+ENV RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS="+S 1:1"
 
 # Add files.
 COPY ./cmd.sh /
